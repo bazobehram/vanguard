@@ -11,7 +11,8 @@
     "format": "prettier --write .",
     "lint": "eslint .",
     "release": "release-it",
-    "release:dry": "release-it --dry-run"
+    "release:dry": "release-it --dry-run",
+    "ship": "node scripts/ship.js"
   },
   "keywords": [],
   "author": "Behram Bazo",
@@ -33,7 +34,8 @@
     "node-fetch": "^2.7.0",
     "ora": "^8.1.1",
     "p-limit": "^7.2.0",
-    "simple-git": "^3.27.0"
+    "simple-git": "^3.27.0",
+    "vanguard-cli": "^3.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
