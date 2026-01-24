@@ -1,19 +1,38 @@
-# 🛡️ Vanguard
+<div align="center">
 
-**Enterprise-Grade AI Supply Chain Firewall for Git.**
+# 🛡️ Vanguard: AI Supply Chain Firewall
+### The Enterprise-Grade Security Layer for Git
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![npm version](https://img.shields.io/npm/v/vanguard-cli.svg)](https://www.npmjs.com/package/vanguard-cli)
-[![Tests](https://github.com/bazobehram/vanguard/actions/workflows/ci.yml/badge.svg)](https://github.com/bazobehram/vanguard/actions)
-[![AI Powered](https://img.shields.io/badge/AI-Gemini%202.0-blue.svg)](https://deepmind.google/technologies/gemini/)
+[![npm version](https://img.shields.io/npm/v/vanguard-cli.svg?style=flat-square)](https://www.npmjs.com/package/vanguard-cli)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![AI Power](https://img.shields.io/badge/AI-Gemini%202.0%20%7C%20Ollama-blue?style=flat-square)](https://deepmind.google/technologies/gemini/)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/bazobehram/vanguard/ci.yml?style=flat-square)](https://github.com/bazobehram/vanguard/actions)
 
-Vanguard intercepts `git clone` and `git pull` operations to perform deep, AI-powered security audits. It blocks malicious logic, dependency poisoning, and supply chain threats **BEFORE** they reach your local development environment.
+<p align="center">
+  <b>Intercepts</b> <code>git clone</code> & <code>git pull</code> to detect malware, backdoors, and vulnerabilities <br>
+  <b>BEFORE</b> they reach your disk. Powered by Hybrid Intelligence.
+</p>
+
+[Installation](#-installation) • [Quick Start](#-quick-start) • [How It Works](#🏗️-architecture) • [Configuration](#⚙️-configuration)
+
+</div>
+
+---
+
+## 🚀 Why Vanguard?
+
+Modern software supply chain attacks are sophisticated. Traditional antiviruses miss them. **Vanguard** acts as a firewall between the internet and your codebase.
+
+*   🧠 **Hybrid Intelligence:** Combines **Google Gemini 2.0**'s reasoning with a curated **Threat Intelligence DB** and **OSV.dev** vulnerability data.
+*   ⚡ **Zero-Latency Caching:** Uses SHA-256 hashing to memorize safe files. Re-scanning a project takes milliseconds.
+*   🔒 **Privacy First:** Supports **Local Ollama**. Your code never leaves your machine if you choose local models.
+*   🛡️ **Proactive Defense:** It doesn't just scan; it intercepts Git commands to prevent bad code from reaching your machine.
 
 ---
 
 ## 🏗️ Architecture
 
-Vanguard operates as a protective layer between your command line and the remote repository. It combines local heuristics with global intelligence.
+Vanguard operates as a protective layer between your command line and the remote repository, combining local heuristics with global intelligence.
 
 ```mermaid
 graph TD
@@ -33,36 +52,32 @@ graph TD
 
 ---
 
-## 💎 Key Features
+## 📦 Installation
 
-*   🧠 **Hybrid Intelligence**: Leverages **Google Gemini 2.0 Flash** for cloud-scale reasoning or **Ollama** (qwen2.5-coder) for 100% private, offline auditing.
-*   ⚡ **Smart Cache**: High-performance SHA-256 hashing ensures that re-scanning unchanged repositories takes sub-milliseconds.
-*   🛡️ **Proactive Defense**: Detects and blocks obfuscated backdoors, credential exfiltration, and malicious lifecycle scripts (PPE) in real-time.
-*   🧪 **Enterprise QA**: Built-in interactive stress-testing wizard (`vanguard-qa`) to verify security boundaries.
-*   🔐 **Privacy First**: Fully configurable. Choose your provider, model, and connectivity preferences.
+Ensure you have Node.js (v18+) installed.
+
+```bash
+npm install -g vanguard-cli
+```
 
 ---
 
 ## 🚀 Quick Start
 
-### Installation
-```bash
-npm install -g vanguard-cli
-```
-
-### Configuration
+### ⚙️ Configuration
 Setup your Gemini API key or local Ollama endpoint:
 ```bash
 vanguard config
 ```
 
-### Usage
-Audit and clone any repository in a single command:
+### 📥 Secure Clone
+Audit and clone any repository in a single command. Vanguard isolates the repo in a sandbox first.
 ```bash
 vanguard clone <repository-url>
 ```
 
-Safely update your local codebase:
+### 🔄 Secure Pull
+Safely update your local codebase. Vanguard audits the diff before merging.
 ```bash
 vanguard pull
 ```
@@ -71,7 +86,7 @@ vanguard pull
 
 ## 🤝 Contribution
 
-We welcome contributions! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for local setup instructions and the [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for community guidelines.
+We welcome contributors! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for local setup instructions and the [CODE_OF_CONDUCT.md](CODE_of_CONDUCT.md) for community guidelines.
 
 ## 🔐 Security
 
