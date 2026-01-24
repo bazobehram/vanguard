@@ -31,10 +31,18 @@ The "Brain" of Vanguard lives in `lib/threats.json` and the `VanguardScanner` sy
 - If you find a bypass, please submit a PR with an updated prompt or threat signature.
 - Specify which model you tested with (e.g., Gemini 2.0, Qwen 2.5 7B).
 
-## 🐛 Submitting Issues
-- Found a bug? Use our **Bug Report** template.
-- Have an idea? Use our **Feature Request** template.
-- **IMPORTANT**: If you discover a critical exploit, do NOT open a public issue. See [SECURITY.md](SECURITY.md).
+## 🚀 How to Release
+Maintainers can trigger a synchronized release (Version bump, Tags, GitHub Release, Changelog, and NPM) using:
+
+1. **Ensure environment**: You must have a `GITHUB_TOKEN` with `repo` permissions in your shell.
+2. **Execute**:
+   ```bash
+   npm run release
+   ```
+3. **Dry Run**: To verify changes without side effects:
+   ```bash
+   npm run release:dry
+   ```
 
 ---
 ☕ Support the research: [Buy Me a Coffee](https://buymeacoffee.com/bazobehram)
