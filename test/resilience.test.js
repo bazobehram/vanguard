@@ -13,13 +13,31 @@ vi.mock('../lib/services/scanner.js', async (importOriginal) => {
 describe('VanguardScanner Resilience', () => {
     it('should retry on 429 errors with cooldown', async () => {
         const scanner = new VanguardScanner();
-        // Force mock the internal sleep for this instance
+        // Force mock the internal setTimeout for this instance to ensure instant execution
         vi.spyOn(global, 'setTimeout').mockImplementation((fn) => fn());
 
         const mockScan = vi.spyOn(scanner, 'scanWithGemini');
 
+        // Mock a 429 failure then success
         mockScan
             .mockRejectedValueOnce(new Error('[429] Too Many Requests'))
+            .mockResolvedValueOnce({ verdict: 'SAFE', risk_score: 0, threats: [], summary: 'Fixed!' });
+
+        // Pass a dummy spinner to trigger the cooldown logging logic
+        const dummySpinner = { text: '' };
+        const result = await scanner.scanWithRetry('test.js', 'content', dummySpinner);
+
+        expect(mockScan).toHaveBeenCalledTimes(2);
+        expect(result.verdict).toBe('SAFE');
+    });
+
+    it('should retry on Quota exceeded errors', async () => {
+        const scanner = new VanguardScanner();
+        vi.spyOn(global, 'setTimeout').mockImplementation((fn) => fn());
+        const mockScan = vi.spyOn(scanner, 'scanWithGemini');
+
+        mockScan
+            .mockRejectedValueOnce(new Error('Quota exceeded for metric...'))
             .mockResolvedValueOnce({ verdict: 'SAFE', risk_score: 0, threats: [], summary: 'Fixed!' });
 
         const result = await scanner.scanWithRetry('test.js', 'content', null);
