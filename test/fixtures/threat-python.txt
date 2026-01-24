@@ -1,0 +1,6 @@
+# Malicious Requirements
+# Dependency Confusion attack
+requests==2.31.0
+numpy==1.25.0
+# Malicious internal package substitution
+our-private-tools==99.9.9

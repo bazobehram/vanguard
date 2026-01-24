@@ -1,0 +1,17 @@
+.github/
+scripts/
+test/
+.gitignore
+.eslintrc.json
+eslint.config.js
+.prettierrc
+vitest.config.js
+implementation_plan.md
+task.md
+walkthrough.md
+*.log
+.vanguard_sim/
+.vanguard_temp/
+docs/
+node_modules/
+package-lock.json

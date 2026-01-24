@@ -1,0 +1,57 @@
+[
+  {
+    "id": "CREDENTIAL_HYGIENE",
+    "name": "Secret Exfiltration",
+    "description": "Detection of hardcoded secrets (.env, API keys, SSH keys) being accessed and transmitted to external endpoints (Credential Hygiene Abuse)."
+  },
+  {
+    "id": "FINANCIAL_FRAUD",
+    "name": "Web3/Wallet Draining",
+    "description": "Unauthorized access to cryptocurrency wallets (window.ethereum, private keys) or triggering of fraudulent transactions."
+  },
+  {
+    "id": "DATA_HARVESTING",
+    "name": "Spyware/Harvesting",
+    "description": "Unnecessary collection of system metadata, user information, browser history, or network topology (Information Gathering)."
+  },
+  {
+    "id": "PIPELINE_POISONING",
+    "name": "Malicious Installers",
+    "description": "Abuse of package lifecycle scripts (postinstall, preinstall) to download and execute arbitrary remote binaries (PPE)."
+  },
+  {
+    "id": "DETECTION_EVASION",
+    "name": "Obfuscation & Evasion",
+    "description": "Heavy use of eval(), nested encoding (Base64/Hex), or polymorphic code designed to bypass static analysis and firewalls."
+  },
+  {
+    "id": "REVERSE_SHELL",
+    "name": "Reverse Shells/Backdoors",
+    "description": "Opening outbound persistent connections (sockets, SSH) or spawning interactive shells to remote Command & Control (C2) servers."
+  },
+  {
+    "id": "DEPENDENCY_ABUSE",
+    "name": "Dependency Hijacking/Confusion",
+    "description": "Exploiting package manager resolution to inject malicious versions of private or public dependencies (Dependency Chain Abuse)."
+  },
+  {
+    "id": "SYSTEM_PERSISTENCE",
+    "name": "Persistence Mechanisms",
+    "description": "Attempts to establish long-term access by modifying startup scripts, Cron jobs, systemd units, or OS registries."
+  },
+  {
+    "id": "GATED_EXECUTION",
+    "name": "Logic/Time Bombs",
+    "description": "Gating malicious activity behind specific dates, system conditions, or external triggers to evade initial analysis."
+  },
+  {
+    "id": "IMPACT_DESTRUCTION",
+    "name": "Ransomware/Wiping",
+    "description": "Unauthorized mass modification, encryption (Ransomware), or deletion (Wiping) of localized data and configurations."
+  },
+  {
+    "id": "QA_MOCK_THREAT",
+    "name": "QA Mock Threat (PROJECT_OMEGA)",
+    "description": "A specialized signature for manual QA stress testing. Verifies that the audit engine can target and block specific strings used in behavioral simulations."
+  }
+]

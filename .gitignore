@@ -1,6 +1,30 @@
-node_modules
-.vanguard_temp
+# Dependencies
+node_modules/
+
+# Environment
 .env
+.env.local
+
+# Cache & Temp files
+.vanguard_cache
+.vanguard_sim/
+.vanguard_temp/
+.vanguard-cache
+vanguard-cache
+
+# Logs
 *.log
-dist
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS specific files
 .DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+
+# IDE files
+.vscode/
+.idea/
