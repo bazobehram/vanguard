@@ -1,6 +1,6 @@
 {
   "name": "vanguard-cli",
-  "version": "3.1.3",
+  "version": "3.1.4",
   "description": "AI-Powered Supply Chain Firewall for Git",
   "type": "module",
   "bin": {
