@@ -59,6 +59,22 @@ program
 program.command('config').description('Configure AI providers').action(runConfigWizard);
 program.command('integrate').description('Install "Invisible Protection" shell wrapper').action(runIntegrate);
 
+program
+    .command('status')
+    .description('Check firewall protection status')
+    .action(() => {
+        showBanner();
+        const isInternal = process.env.VANGUARD_INTERNAL === '1';
+        console.log(chalk.bold('🔥 Firewall Status:'));
+        if (isInternal) {
+            console.log(chalk.green('  ✅ ACTIVE (Intercepted Session)'));
+        } else {
+            console.log(chalk.yellow('  ⚠️  OFFLINE (Direct CLI Access)'));
+            console.log(chalk.dim('\nTo activate Invisible Protection, run: vanguard integrate'));
+        }
+        showFooter();
+    });
+
 
 program
     .command('pull')
