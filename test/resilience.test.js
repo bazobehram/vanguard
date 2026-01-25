@@ -1,21 +1,19 @@
-import { describe, it, expect, vi } from 'vitest';
-import { VanguardScanner, sleep } from '../lib/services/scanner.js';
-
-// Global mock for sleep to speed up tests
-vi.mock('../lib/services/scanner.js', async (importOriginal) => {
-    const actual = await importOriginal();
-    return {
-        ...actual,
-        sleep: vi.fn(() => Promise.resolve()),
-    };
-});
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { VanguardScanner } from '../lib/services/scanner.js';
+import * as scannerModule from '../lib/services/scanner.js';
 
 describe('VanguardScanner Resilience', () => {
+    beforeEach(() => {
+        vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+        vi.restoreAllMocks();
+        vi.useRealTimers();
+    });
+
     it('should retry on 429 errors with cooldown', async () => {
         const scanner = new VanguardScanner();
-        // Force mock the internal setTimeout for this instance to ensure instant execution
-        vi.spyOn(global, 'setTimeout').mockImplementation((fn) => fn());
-
         const mockScan = vi.spyOn(scanner, 'scanWithGemini');
 
         // Mock a 429 failure then success
@@ -25,7 +23,16 @@ describe('VanguardScanner Resilience', () => {
 
         // Pass a dummy spinner to trigger the cooldown logging logic
         const dummySpinner = { text: '' };
-        const result = await scanner.scanWithRetry('test.js', 'content', dummySpinner);
+
+        const scanPromise = scanner.scanWithRetry('test.js', 'content', dummySpinner);
+
+        // Fast-forward through the 30s cooldown
+        // The loop calls sleep(1000) thirty times
+        for (let i = 0; i < 35; i++) {
+            await vi.advanceTimersByTimeAsync(1000);
+        }
+
+        const result = await scanPromise;
 
         expect(mockScan).toHaveBeenCalledTimes(2);
         expect(result.verdict).toBe('SAFE');
@@ -33,14 +40,18 @@ describe('VanguardScanner Resilience', () => {
 
     it('should retry on Quota exceeded errors', async () => {
         const scanner = new VanguardScanner();
-        vi.spyOn(global, 'setTimeout').mockImplementation((fn) => fn());
         const mockScan = vi.spyOn(scanner, 'scanWithGemini');
 
         mockScan
             .mockRejectedValueOnce(new Error('Quota exceeded for metric...'))
             .mockResolvedValueOnce({ verdict: 'SAFE', risk_score: 0, threats: [], summary: 'Fixed!' });
 
-        const result = await scanner.scanWithRetry('test.js', 'content', null);
+        const scanPromise = scanner.scanWithRetry('test.js', 'content', null);
+
+        // Fast-forward 30s
+        await vi.advanceTimersByTimeAsync(31000);
+
+        const result = await scanPromise;
 
         expect(mockScan).toHaveBeenCalledTimes(2);
         expect(result.verdict).toBe('SAFE');
