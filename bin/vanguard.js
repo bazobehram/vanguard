@@ -11,6 +11,21 @@ import config from '../lib/utils/config.js';
 const program = new Command();
 
 async function handleAction(actionName, logicFn) {
+    const isConfigured =
+        (config.get('AI_PROVIDER') === 'gemini' && config.get('GEMINI_KEY')) ||
+        (config.get('AI_PROVIDER') === 'ollama');
+
+    if (!isConfigured) {
+        showBanner();
+        console.log(chalk.yellow(`🛡️ Vanguard V3 is not fully configured. Starting setup...\n`));
+        await runConfigWizard();
+        // After wizard, check again
+        if (!config.get('GEMINI_KEY') && config.get('AI_PROVIDER') === 'gemini') {
+            console.log(chalk.red('\n❌ Configuration incomplete. Please provide a Gemini API key.'));
+            return;
+        }
+    }
+
     showBanner();
     const options = program.opts();
     config.set('VERBOSE', !!options.verbose);
@@ -27,11 +42,6 @@ async function handleAction(actionName, logicFn) {
     if (!proceed) {
         console.log('⚠️  Skipping protection. Proceeding at your own risk.');
         return;
-    }
-
-    if (config.get('AI_PROVIDER') === 'gemini' && !config.get('GEMINI_KEY')) {
-        console.log('❌ Gemini not configured.');
-        await runConfigWizard();
     }
 
     await logicFn();
@@ -68,3 +78,18 @@ program
     });
 
 program.parse(process.argv);
+
+// Default action: if no command provided, check config
+if (!process.argv.slice(2).length) {
+    const isConfigured =
+        (config.get('AI_PROVIDER') === 'gemini' && config.get('GEMINI_KEY')) ||
+        (config.get('AI_PROVIDER') === 'ollama');
+
+    if (!isConfigured) {
+        showBanner();
+        console.log(chalk.yellow(`🛡️ Vanguard V3 is not fully configured. Starting setup...\n`));
+        await runConfigWizard();
+    } else {
+        program.help();
+    }
+}
