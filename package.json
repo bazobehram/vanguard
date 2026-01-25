@@ -19,7 +19,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bazob/vanguard.git"
+    "url": "git+https://github.com/bazobehram/vanguard.git"
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
