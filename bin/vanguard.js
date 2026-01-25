@@ -45,7 +45,38 @@ async function handleAction(actionName, logicFn) {
     ]);
 
     if (!proceed) {
-        console.log('⚠️  Skipping protection. Proceeding at your own risk.');
+        console.log(chalk.yellow('⚠️  Skipping protection. Proceeding at your own risk.'));
+
+        // If the user skips Vanguard, we must execute the original git command
+        if (actionName === 'CLONE') {
+            // Reconstruct arguments
+            const args = process.argv.slice(3); // Remove node, bin, clone
+            // This is a simplified fallback. In a real integration, we'd want to execSync/spawn 
+            // "git clone ..." but since we are inside a node process wrapping git, 
+            // we can suggest the user run usage logic or attempt spawn.
+
+            // However, for the 'integrate' shell function, if 'vanguard' exits with 0 and no output,
+            // the shell function expects to be done.
+            // The Shell Integration logic:
+            // if [ "$1" = "clone" ] ... vanguard clone ... else git clone ...
+
+            // If we return here, Vanguard finishes. The shell wrapper won't run `git clone` because 
+            // it delegated the job to `vanguard clone`.
+
+            // SO: We must actually perform the git clone ourselves now, or exit with a specific code 
+            // that tells the shell wrapper to fallback (complex).
+
+            // Easiest path: Spawn 'git' directly here.
+            const { spawn } = await import('child_process');
+            const gitArgs = [actionName.toLowerCase(), ...process.argv.slice(3)];
+
+            const child = spawn('git', gitArgs, { stdio: 'inherit', shell: true });
+            child.on('close', (code) => {
+                process.exit(code);
+            });
+            // We return promise to await exit
+            return new Promise(() => { });
+        }
         return;
     }
 
