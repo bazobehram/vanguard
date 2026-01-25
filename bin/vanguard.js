@@ -2,6 +2,7 @@
 
 import { Command } from 'commander';
 import inquirer from 'inquirer';
+import chalk from 'chalk';
 import { runConfigWizard } from '../lib/commands/config.js';
 import { runIntegrate } from '../lib/commands/integrate.js';
 import { handlePull, handleClone } from '../lib/commands/scan.js';
