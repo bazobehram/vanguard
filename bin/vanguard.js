@@ -18,7 +18,7 @@ const program = new Command();
 async function handleAction(actionName, logicFn) {
     const isConfigured =
         (config.get('AI_PROVIDER') === 'gemini' && config.get('GEMINI_KEY')) ||
-        (config.get('AI_PROVIDER') === 'ollama');
+        (config.get('AI_PROVIDER') === 'ollama' && config.get('OLLAMA_MODEL'));
 
     if (!isConfigured) {
         // showBanner();
@@ -105,7 +105,7 @@ program.parse(process.argv);
 if (!process.argv.slice(2).length) {
     const isConfigured =
         (config.get('AI_PROVIDER') === 'gemini' && config.get('GEMINI_KEY')) ||
-        (config.get('AI_PROVIDER') === 'ollama');
+        (config.get('AI_PROVIDER') === 'ollama' && config.get('OLLAMA_MODEL'));
 
     if (!isConfigured) {
         // showBanner();
