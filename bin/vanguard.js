@@ -3,6 +3,7 @@
 import { Command } from 'commander';
 import inquirer from 'inquirer';
 import { runConfigWizard } from '../lib/commands/config.js';
+import { runIntegrate } from '../lib/commands/integrate.js';
 import { handlePull, handleClone } from '../lib/commands/scan.js';
 import { showBanner, showFooter } from '../lib/utils/ui.js';
 import config from '../lib/utils/config.js';
@@ -46,6 +47,8 @@ program
     .option('--clear-cache', 'Flush local audit cache');
 
 program.command('config').description('Configure AI providers').action(runConfigWizard);
+program.command('integrate').description('Install "Invisible Protection" shell wrapper').action(runIntegrate);
+
 
 program
     .command('pull')
