@@ -64,6 +64,18 @@ npm install -g vanguard-cli
 
 ## 🚀 Quick Start
 
+### 🛡️ Enable Invisible Protection
+Integrate Vanguard with your shell (Bash, Zsh, Fish, PowerShell) to automatically scan every `git clone`.
+```bash
+vanguard integrate
+```
+
+### 📊 Check Status
+Verify if the firewall is active or if you are in a protected session.
+```bash
+vanguard status
+```
+
 ### ⚙️ Configuration
 Setup your Gemini API key or local Ollama endpoint:
 ```bash

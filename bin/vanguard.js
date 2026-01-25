@@ -9,6 +9,10 @@ import { handlePull, handleClone } from '../lib/commands/scan.js';
 import { showBanner, showFooter } from '../lib/utils/ui.js';
 import config from '../lib/utils/config.js';
 
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const pkg = require('../package.json');
+
 const program = new Command();
 
 async function handleAction(actionName, logicFn) {
@@ -17,7 +21,7 @@ async function handleAction(actionName, logicFn) {
         (config.get('AI_PROVIDER') === 'ollama');
 
     if (!isConfigured) {
-        showBanner();
+        // showBanner();
         console.log(chalk.yellow(`🛡️ Vanguard V3 is not fully configured. Starting setup...\n`));
         await runConfigWizard();
         // After wizard, check again
@@ -27,7 +31,7 @@ async function handleAction(actionName, logicFn) {
         }
     }
 
-    showBanner();
+    // showBanner();
     const options = program.opts();
     config.set('VERBOSE', !!options.verbose);
 
@@ -52,7 +56,7 @@ async function handleAction(actionName, logicFn) {
 program
     .name('vanguard')
     .description('Enterprise-Grade AI Supply Chain Firewall')
-    .version('3.0.0-enterprise')
+    .version(pkg.version)
     .option('-m, --model <name>', 'Override AI model')
     .option('-v, --verbose', 'Show verbose connection logs')
     .option('--clear-cache', 'Flush local audit cache');
@@ -64,7 +68,7 @@ program
     .command('status')
     .description('Check firewall protection status')
     .action(() => {
-        showBanner();
+        // showBanner();
         const isInternal = process.env.VANGUARD_INTERNAL === '1';
         console.log(chalk.bold('🔥 Firewall Status:'));
         if (isInternal) {
@@ -94,6 +98,7 @@ program
         await handleAction('CLONE', () => handleClone(url, directory, program.opts()));
     });
 
+showBanner(pkg.version);
 program.parse(process.argv);
 
 // Default action: if no command provided, check config
@@ -103,7 +108,7 @@ if (!process.argv.slice(2).length) {
         (config.get('AI_PROVIDER') === 'ollama');
 
     if (!isConfigured) {
-        showBanner();
+        // showBanner();
         console.log(chalk.yellow(`🛡️ Vanguard V3 is not fully configured. Starting setup...\n`));
         await runConfigWizard();
     } else {
