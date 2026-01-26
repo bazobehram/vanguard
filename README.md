@@ -26,7 +26,8 @@ Modern software supply chain attacks are sophisticated. Traditional antiviruses 
 *   🧠 **Hybrid Intelligence:** Combines **Google Gemini 2.0**'s reasoning with a curated **Threat Intelligence DB** and **OSV.dev** vulnerability data.
 *   ⚡ **Zero-Latency Caching:** Uses SHA-256 hashing to memorize safe files. Re-scanning a project takes milliseconds.
 *   🔒 **Privacy First:** Supports **Local Ollama**. Your code never leaves your machine if you choose local models.
-*   🛡️ **Proactive Defense:** It doesn't just scan; it intercepts Git commands to prevent bad code from reaching your machine.
+*   🛡️ **Proactive Defense:** It doesn't just scan; it intercepts Git commands to prevent bad code from reaching your disk.
+*   ⚡ **Flexible Audit Modes:** Choose between a **Quick Audit** (targeting configuration and entry files) or a **Deep Audit** (full behavioral analysis of all code files).
 
 ---
 

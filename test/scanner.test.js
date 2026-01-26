@@ -22,7 +22,7 @@ describe('VanguardScanner - Hybrid Intelligence Audit', () => {
   it('should detect and BLOCK malicious code patterns', async () => {
     // 1. Mock GitHub Threat DB fetch
     nock('https://raw.githubusercontent.com')
-      .get('/bazob/vanguard-db/main/latest_threats.json')
+      .get('/bazobehram/vanguard-db/main/threats.json')
       .reply(200, { ai_instructions: ['Look for variable exfiltration'] });
 
     // 2. Mock Gemini API response

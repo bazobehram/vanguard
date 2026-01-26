@@ -8,10 +8,14 @@ import { runIntegrate } from '../lib/commands/integrate.js';
 import { handlePull, handleClone } from '../lib/commands/scan.js';
 import { showBanner, showFooter } from '../lib/utils/ui.js';
 import config from '../lib/utils/config.js';
+import { checkForUpdates } from '../lib/utils/update.js';
 
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const pkg = require('../package.json');
+
+// Check for updates in the background
+checkForUpdates(pkg.version);
 
 const program = new Command();
 
@@ -35,38 +39,24 @@ async function handleAction(actionName, logicFn) {
     const options = program.opts();
     config.set('VERBOSE', !!options.verbose);
 
-    const { proceed } = await inquirer.prompt([
+    const { mode } = await inquirer.prompt([
         {
-            type: 'confirm',
-            name: 'proceed',
-            message: `🛡️ Vanguard Enterprise Edition detected a ${actionName}. Activate Hybrid Intelligence?`,
-            default: true,
+            type: 'list',
+            name: 'mode',
+            message: `🛡️ Vanguard Enterprise Edition detected a ${actionName}. Select protection level:`,
+            choices: [
+                { name: chalk.green('⚡ Quick Audit ') + chalk.dim('(Config & Entry Files)'), value: 'quick' },
+                { name: chalk.cyan('🛡️  Deep Audit  ') + chalk.dim('(Full behavioral scanning)'), value: 'deep' },
+                { name: chalk.yellow('⚠️  Skip        ') + chalk.dim('(Direct execution - RISKY)'), value: 'skip' },
+            ],
+            default: 'quick',
         },
     ]);
 
-    if (!proceed) {
-        console.log(chalk.yellow('⚠️  Skipping protection. Proceeding at your own risk.'));
+    if (mode === 'skip') {
+        console.log(chalk.yellow('\n⚠️  Skipping protection. Proceeding at your own risk.'));
 
-        // If the user skips Vanguard, we must execute the original git command
         if (actionName === 'CLONE') {
-            // Reconstruct arguments
-            const args = process.argv.slice(3); // Remove node, bin, clone
-            // This is a simplified fallback. In a real integration, we'd want to execSync/spawn 
-            // "git clone ..." but since we are inside a node process wrapping git, 
-            // we can suggest the user run usage logic or attempt spawn.
-
-            // However, for the 'integrate' shell function, if 'vanguard' exits with 0 and no output,
-            // the shell function expects to be done.
-            // The Shell Integration logic:
-            // if [ "$1" = "clone" ] ... vanguard clone ... else git clone ...
-
-            // If we return here, Vanguard finishes. The shell wrapper won't run `git clone` because 
-            // it delegated the job to `vanguard clone`.
-
-            // SO: We must actually perform the git clone ourselves now, or exit with a specific code 
-            // that tells the shell wrapper to fallback (complex).
-
-            // Easiest path: Spawn 'git' directly here.
             const { spawn } = await import('child_process');
             const gitArgs = [actionName.toLowerCase(), ...process.argv.slice(3)];
 
@@ -74,13 +64,12 @@ async function handleAction(actionName, logicFn) {
             child.on('close', (code) => {
                 process.exit(code);
             });
-            // We return promise to await exit
             return new Promise(() => { });
         }
         return;
     }
 
-    await logicFn();
+    await logicFn(mode);
     showFooter();
 }
 
@@ -117,7 +106,7 @@ program
     .description('Audit and pull upstream changes')
     .option('-f, --force', 'Force merge even if threats are detected')
     .action(async (cmdOptions) => {
-        await handleAction('PULL', () => handlePull(cmdOptions, program.opts()));
+        await handleAction('PULL', (mode) => handlePull(cmdOptions, program.opts(), mode));
     });
 
 program
@@ -126,7 +115,7 @@ program
     .argument('<url>', 'Git URL')
     .argument('[directory]', 'Target directory')
     .action(async (url, directory) => {
-        await handleAction('CLONE', () => handleClone(url, directory, program.opts()));
+        await handleAction('CLONE', (mode) => handleClone(url, directory, program.opts(), mode));
     });
 
 showBanner(pkg.version);
