@@ -4,7 +4,7 @@
 ### The Enterprise-Grade Security Layer for Git
 
 [![npm version](https://img.shields.io/npm/v/vanguard-cli.svg?style=flat-square)](https://www.npmjs.com/package/vanguard-cli)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-GPL--3.0--or--later-blue.svg?style=flat-square)](https://www.gnu.org/licenses/gpl-3.0.html)
 [![AI Power](https://img.shields.io/badge/AI-Gemini%202.0%20%7C%20Ollama-blue?style=flat-square)](https://deepmind.google/technologies/gemini/)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/bazobehram/vanguard/ci.yml?style=flat-square)](https://github.com/bazobehram/vanguard/actions)
 
